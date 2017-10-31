@@ -3,8 +3,10 @@
 # This script should be invoked via setup_t2.sh or setup_p2.sh; those scripts
 # will export the right environment variables for this to succeed.
 
+export AWS_DEFAULT_PROFILE=giraffe
+
 # uncomment for debugging
-# set -x
+set -x
 
 if [ -z "$ami" ] || [ -z "$instanceType" ]; then
     echo "Missing \$ami or \$instanceType; this script should be called from"
