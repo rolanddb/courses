@@ -7,23 +7,33 @@ sudo apt-get --assume-yes install tmux build-essential gcc g++ make binutils
 sudo apt-get --assume-yes install software-properties-common
 
 # download and install GPU drivers
-wget "http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_8.0.44-1_amd64.deb" -O "cuda-repo-ubuntu1604_8.0.44-1_amd64.deb"
+sudo apt-get purge nvidia* -y
+sudo apt-get autoremove -y
 
-sudo dpkg -i cuda-repo-ubuntu1604_8.0.44-1_amd64.deb
+# fix kernel stuff http://forums.fast.ai/t/persistent-aws-spot-instances-how-to/1497/101
+
+wget "http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb" -O "cuda-repo-ubuntu1604_8.0.61-1_amd64.deb"
+sudo dpkg -i cuda-repo-ubuntu1604_8.0.61-1_amd64.deb
 sudo apt-get update
-sudo apt-get -y install cuda
+#sudo apt-get -y install cuda
+sudo apt-get -y install cuda-8-0 # 9 does not work
 sudo modprobe nvidia
 nvidia-smi
 
 # install Anaconda for current user
 mkdir downloads
 cd downloads
-wget "https://repo.continuum.io/archive/Anaconda2-4.2.0-Linux-x86_64.sh" -O "Anaconda2-4.2.0-Linux-x86_64.sh"
-bash "Anaconda2-4.2.0-Linux-x86_64.sh" -b
+wget "https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh" -O "Anaconda3-5.0.1-Linux-x86_64.sh"
+bash "Anaconda3-5.0.1-Linux-x86_64.sh" -b
 
-echo "export PATH=\"$HOME/anaconda2/bin:\$PATH\"" >> ~/.bashrc
-export PATH="$HOME/anaconda2/bin:$PATH"
+echo "export PATH=\"$HOME/anaconda3/bin:\$PATH\"" >> ~/.bashrc
+export PATH="$HOME/anaconda3/bin:$PATH"
 conda install -y bcolz
+conda install -y keras
+conda install nb_conda
+
+
+#conda install -y -c mila-udem -c mila-udem/label/pre pygpu
 conda upgrade -y --all
 
 # install and configure theano
@@ -64,3 +74,33 @@ cd ~
 git clone https://github.com/fastai/courses.git
 echo "\"jupyter notebook\" will start Jupyter on port 8888"
 echo "If you get an error instead, try restarting your session so your $PATH is updated"
+
+
+
+
+
+
+
+cd ~
+http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub
+sudo apt-get update
+sudo apt-get install cuda
+
+
+
+
+
+
+aws ec2 modify-instance-attribute --instance-id i-0c6b2ef7727a124da --block-device-mappings "[{\"DeviceName\": \"/dev/xvda1\",\"Ebs\":{\"DeleteOnTermination\":false}}]"
+
+
+
+
+
+
+
+
+pip install kaggle-cli
+kg config -g -u 'rdeboo' -p '2YMWxkdBYI4EcG' -c 'dogs-vs-cats-redux-kernels-edition'

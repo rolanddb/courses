@@ -7,7 +7,8 @@ export region=$(aws configure get region)
 if [ $region = "us-west-2" ]; then
    export ami="ami-f8fd5998" # Oregon
 elif [ $region = "eu-west-1" ]; then
-   export ami="ami-9e1a35ed" # Ireland
+    #export ami="ami-9e1a35ed" # Ireland
+    export ami="ami-dca37ea5" # Deep Learning AMI CUDA 8 Ubuntu Version
 elif [ $region = "us-east-1" ]; then
   export ami="ami-9c5b438b" # Virginia
 else
